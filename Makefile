@@ -195,6 +195,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 export KBUILD_BUILDHOST := $(SUBARCH)
 ARCH		?=arm
 CROSS_COMPILE	?=$(srctree)/../../../prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
+#CROSS_COMPILE	?=/opt/toolchains/arm-linux-gnueabi-4.9/bin/arm-eabi-
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -377,10 +378,22 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
+		   -Wno-maybe-uninitialized \
 		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks \
-		   -fdiagnostics-show-option -Werror
+		   -fdiagnostics-show-option -Werror \
+                   -Wno-format-security -Wno-sizeof-pointer-memaccess \
+		   -fmodulo-sched -fmodulo-sched-allow-regmoves \
+           -funswitch-loops -fpredictive-commoning -fgcse-after-reload \
+ 		   -ftree-loop-vectorize -ftree-loop-distribute-patterns -ftree-slp-vectorize \
+            -fvect-cost-model -ftree-partial-pre \
+            -fgcse-lm -fgcse-sm -fsched-spec-load -fsingle-precision-constant
+		   -fno-delete-null-pointer-checks -std=gnu11 \
+		   -fgcse-after-reload -fgcse-sm -fgcse-las \
+		   -fweb -frename-registers \
+		   -ftree-loop-im -ftree-loop-linear \
+		   -ftree-loop-ivcanon -ftree-vectorize \
+		   -fno-delete-null-pointer-checks -std=gnu11 -DNDEBUG
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
