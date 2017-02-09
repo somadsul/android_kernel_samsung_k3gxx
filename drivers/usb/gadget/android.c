@@ -22,7 +22,6 @@
 #include <linux/kernel.h>
 #include <linux/utsname.h>
 #include <linux/platform_device.h>
-#include <linux/runtime_dependency.h>
 
 #include <linux/usb/ch9.h>
 #include <linux/usb/composite.h>
@@ -35,8 +34,11 @@
 #include "f_midi.c"
 #include "f_mass_storage.c"
 #include "f_adb.c"
-#include "f_mtp.c"
+#ifdef CONFIG_USB_ANDROID_SAMSUNG_MTP
 #include "f_mtp_samsung.c"
+#else
+#include "f_mtp.c"
+#endif
 #include "f_accessory.c"
 
 #define USB_ETH_RNDIS y
@@ -645,29 +647,20 @@ static struct android_usb_function acm_function = {
 static int
 mtp_function_init(struct android_usb_function *f,
 		struct usb_composite_dev *cdev)
-{	
-	if (rt_is_flag(MTP_SAMSUNG))
-		return _mtp_setup();
-	else
-		return mtp_setup();
+{
+	return mtp_setup();
 }
 
 static void mtp_function_cleanup(struct android_usb_function *f)
 {
-    if (rt_is_flag(MTP_SAMSUNG))
-		_mtp_cleanup();
-	else
-		mtp_cleanup();
+	mtp_cleanup();
 }
 
 static int
 mtp_function_bind_config(struct android_usb_function *f,
 		struct usb_configuration *c)
 {
-    if (rt_is_flag(MTP_SAMSUNG))
-		return _mtp_bind_config(c, false);
-	else
-		return mtp_bind_config(c, false);
+	return mtp_bind_config(c, false);
 }
 
 static int
@@ -687,20 +680,14 @@ static int
 ptp_function_bind_config(struct android_usb_function *f,
 		struct usb_configuration *c)
 {
-	if (rt_is_flag(MTP_SAMSUNG))
-		return _mtp_bind_config(c, true);
-	else
-		return mtp_bind_config(c, true);
+	return mtp_bind_config(c, true);
 }
 
 static int mtp_function_ctrlrequest(struct android_usb_function *f,
 					struct usb_composite_dev *cdev,
 					const struct usb_ctrlrequest *c)
 {
-	if (rt_is_flag(MTP_SAMSUNG))
-		return _mtp_ctrlrequest(cdev, c);
-	else
-		return mtp_ctrlrequest(cdev, c);
+	return mtp_ctrlrequest(cdev, c);
 }
 
 static struct android_usb_function mtp_function = {
