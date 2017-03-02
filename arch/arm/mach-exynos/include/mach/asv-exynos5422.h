@@ -13,7 +13,7 @@
 #ifndef __ASM_ARCH_EXYNOS5422_ASV_H
 #define __ASM_ARCH_EXYNOS5422_ASV_H __FILE__
 
-#define ARM_DVFS_LEVEL_NR		(18)
+#define ARM_DVFS_LEVEL_NR		(20)
 #define ARM_ASV_GRP_NR			(15)
 #define ARM_MAX_VOLT			(1362500)
 
@@ -21,7 +21,7 @@
 
 #define INT_ASV_GRP_NR			(15)
 #define INT_MAX_VOLT			(1212500)
-#define G3D_DVFS_LEVEL_NR		(7)
+#define G3D_DVFS_LEVEL_NR		(9)
 #define G3D_ASV_GRP_NR			(15)
 #define G3D_MAX_VOLT			(1150000)
 #define MIF_DVFS_LEVEL_NR		(9)
